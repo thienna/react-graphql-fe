@@ -5,10 +5,17 @@ import gql from 'graphql-tag'
 import query from '../queries/fetchSongs'
 
 class LyricList extends Component {
-    onLyricLike(id) {
+    onLyricLike(id, likes) {
         this.props.mutate({
             variables: {
                 id: id
+            },
+            optimisticResponse: {
+                likeLyric: {
+                    id,
+                    __typename: 'LyricType',
+                    likes: likes + 1
+                }
             }
         })
     }
@@ -16,13 +23,13 @@ class LyricList extends Component {
     renderLyrics() {
         return this.props.lyrics.map(({ id, content, likes }) => {
             return (
-                <div className="collection-item">
+                <div key={id} className="collection-item">
                     {content}
-                    <li key={id} className="vote-box">
+                    <li className="vote-box">
                         {likes}
                         <i
                             className="material-icons"
-                            onClick={() => this.onLyricLike(id)}
+                            onClick={() => this.onLyricLike(id, likes)}
                         >
                             thumb_up
                         </i>
