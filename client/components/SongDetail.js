@@ -5,10 +5,15 @@ import SongQuery from '../queries/fetchSong'
 
 class SongDetail extends Component {
     render() {
-        console.log(this.props.data)
+        const { song, loading } = this.props.data
+        if (loading) {
+            return (
+                <div>loading...</div>
+            )
+        }
         return (
             <div>
-                <h3>{this.props.data.song.title}</h3>
+                <h3>{song.title}</h3>
             </div>
         )
     }
